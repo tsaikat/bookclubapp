@@ -2,20 +2,19 @@ import Link from "next/link";
 import axios from 'axios';
 import  { useRef } from 'react';
 
-
-const BookList = ( {books} ) => {
+const MemberList = ( {members} ) => {
 
     const actionMsg = useRef(null);
 
-    const handleDeleteButton = (book) => {
-        axios.delete(process.env.NEXT_PUBLIC_API_HOST + '/books/' + book.bookId )
+    const handleDeleteButton = (member) => {
+        axios.delete(process.env.NEXT_PUBLIC_API_HOST + '/members/' + member.id )
         .then(res => {
             actionMsg.current.className = "alert alert-success";
-            actionMsg.current.innerText = book.bookTitle + " was deleted successfully";
+            actionMsg.current.innerText = member.firstName + " " + member.lastName + " was removed successfully";
         })
         .catch(error => {
             actionMsg.current.className = "alert alert-danger";
-            actionMsg.current.innerText = book.bookTitle + " failed to delete! Try again";
+            actionMsg.current.innerText = member.firstName + " " + member.lastName + " failed to remove! Try again.";
         });
 
         if (actionMsg.current) {
@@ -26,41 +25,43 @@ const BookList = ( {books} ) => {
         }
         
     };
-    
 
+    
     return ( 
         <>
         <div ref={actionMsg} className="" role="alart"></div>
         <div className="d-flex justify-content-between align-items-center">
-          <h3 className="card-title mb-4 text-uppercase text-dark">List of Books</h3> 
+          <h3 className="card-title mb-4 text-uppercase text-dark">List of Members</h3> 
         </div>
         <table className="table table-hover tab container shadow-lg rounded-top p-lg-5">
           <thead className="bg-dark-subtle rounded-top">
             <tr>
-              <th>Title</th>
-              <th>Author</th>
-              <th>Genre</th>
+              <th>Name</th>
+              <th>Joined</th>
+              <th>Balance</th>
+              <th>Total Borrowings</th>
               <th></th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            {books.map(b => (
-                <tr key ={b.bookId}>
-                    <th>{b.bookTitle}</th>
-                    <th>{b.author}</th>
-                    <th>{b.genre}</th>
+            {members.map(m => (
+                <tr key ={m.id}>
+                    <th>{m.firstName + " " + m.lastName}</th>
+                    <th>{m.joinDate.slice(0, 10)}</th>
+                    <th>{m.balance}</th>
+                    <th>{m.borrowings.length}</th>
                     <th>
                         <button
                         className="btn btn-outline-dark"  
-                        onClick={() => handleDeleteButton(b)}>
-                             Delete 
+                        onClick={() => handleDeleteButton(m)}>
+                             Remove 
                         </button>
                     </th>
                     <th>
-                        <Link href={"/book/edit/" + b.bookId} 
+                        <Link href={"/member/balance/" + m.id } 
                         className="btn btn-outline-dark" 
-                        role ="button"> Edit 
+                        role ="button"> Add balance 
                         </Link>
                     </th>
                 </tr>
@@ -71,4 +72,4 @@ const BookList = ( {books} ) => {
      );
 }
  
-export default BookList;
+export default MemberList;
