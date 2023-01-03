@@ -18,10 +18,12 @@ const BookList = ( {books} ) => {
             actionMsg.current.innerText = book.bookTitle + " failed to delete! Try again";
         });
 
-        setTimeout(() => {
-            actionMsg.current.className = '';
-            actionMsg.current.innerText = '';
-          }, 5000);
+        if (actionMsg.current) {
+            setTimeout(() => {
+              actionMsg.current.className = '';
+              actionMsg.current.innerText = '';
+            }, 5000);
+        }
         
     };
     
@@ -56,7 +58,7 @@ const BookList = ( {books} ) => {
                         </button>
                     </th>
                     <th>
-                        <Link href="/book/edit" className="btn btn-outline-dark" role ="button"> Edit </Link>
+                        <Link href={"/book/edit/" + b.bookId } className="btn btn-outline-dark" role ="button"> Edit </Link>
                     </th>
                 </tr>
             ))}

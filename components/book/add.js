@@ -34,8 +34,10 @@ const AddBook = () => {
       });
 
       setTimeout(() => {
-        actionMsg.current.className = '';
-        actionMsg.current.innerText = '';
+        if (actionMsg.current) {
+          actionMsg.current.className = '';
+          actionMsg.current.innerText = '';
+        }
       }, 5000);
 
   };
@@ -57,6 +59,7 @@ const AddBook = () => {
               id ="title"
               name ="bookTitle"
               className="form-control" 
+              required
               value = {formData.bookTitle}
               onChange = {handleChange} 
               />
@@ -69,6 +72,7 @@ const AddBook = () => {
               type="text"
               id = "author"
               name = "author"
+              required
               value = {formData.author} 
               className="form-control form"
               onChange ={handleChange}
@@ -82,6 +86,7 @@ const AddBook = () => {
           type="text" 
           id="genre"
           name = "genre"
+          required
           value = {formData.genre}
           className="form-control"
           onChange = {handleChange}
