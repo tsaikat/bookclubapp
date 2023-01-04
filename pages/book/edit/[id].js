@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useRef, useState } from 'react';
 
-export async function getServerSideProps( {query} s) {
+export async function getServerSideProps( {query} ) {
 
   const {id} = query;
 
@@ -49,7 +49,7 @@ const EditBook = ( {data, id} ) => {
           actionMsg.current.className = "alert alert-danger";
           actionMsg.current.innerText = "Something went wrong. Please try again correctly";
       });
-      
+
     setTimeout(() => {
         if (actionMsg.current) {
             actionMsg.current.className = '';

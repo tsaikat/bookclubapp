@@ -11,11 +11,11 @@ const Books = ( ) => {
 
    useEffect( () => {
     axios.get(process.env.NEXT_PUBLIC_API_HOST + '/books')
-      .then(res => {
+      .then((res) => {
         setBooks(res.data);
       })
       .catch ((error) => {
-        bookListBlock.current.className = "alart alert-danger text-center";
+        bookListBlock.current.className = "alert alert-danger text-center";
         bookListBlock.current.innerText = "Failed to render booklist: " + error.message;
       });
   }, [<AddBook/>]);

@@ -17,7 +17,7 @@ const Members = () => {
                 setMembers(res.data);
             })
             .catch( (error) => {
-                memberListBlock.current.className = "alart alert-danger text-center";
+                memberListBlock.current.className = "alert alert-danger text-center";
                 memberListBlock.current.innerText = "Failed to render Members List: " + error.message;
             })
     }, [<AddMember/>] );
