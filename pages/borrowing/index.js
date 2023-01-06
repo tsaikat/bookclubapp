@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import axios from 'axios';
 import BorrowingList from "../../components/borrowing/borrowinglist";
+import Link from "next/link";
 
 const Borrowings = () => {
     const [borrowings, setBorrowings] = useState([]);
@@ -17,7 +18,10 @@ const Borrowings = () => {
     }, [<BorrowingList/>]);
 
     return ( 
-        <div className="container mt-5">
+        <div className="container mt-5" >
+            <div className="d-flex flex-row-reverse bd-highlight">
+                <Link href="/borrowing/create" type="button" className="btn btn-dark shadow">Create New Borrowing</Link>
+            </div>
             <div ref={borrowingBlock}>
                 <BorrowingList borrowings= {borrowings}/> 
             </div>
