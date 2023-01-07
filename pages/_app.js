@@ -1,12 +1,12 @@
 import Footer from '../components/footer'
-import Navbar from '../components/navbar'
 import 'bootstrap/dist/css/bootstrap.css'
+import Header from '../components/header'
 
 
 export default function App({ Component, pageProps }) {
   return (
     <div>
-    <Navbar/>
+    <Header/>
     <Component {...pageProps} />
     <Footer/>
     </div>

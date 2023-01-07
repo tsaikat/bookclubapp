@@ -27,6 +27,19 @@ const BorrowingList = ( {borrowings} ) => {
         
     };
 
+    const handleReturnButton = (b) => {
+      axios.put(process.env.NEXT_PUBLIC_API_HOST + '/borrowings/' + b.borrowingId, b)
+        .then(res => {
+          actionMsg.current.className = "alert alert-success";
+          actionMsg.current.innerText = "Borrowing Ref no: " + b.borrowingId + " returned";
+          // b.returnDate = res.data.returnDate;
+        })
+        .catch(error => {
+          actionMsg.current.className = "alert alert-danger";
+          actionMsg.current.innerText = "Failed to return, try again";
+        });
+    }
+
 
     return ( 
         <>
@@ -37,7 +50,7 @@ const BorrowingList = ( {borrowings} ) => {
         <table className="table table-hover tab container shadow-lg rounded-top p-lg-5">
           <thead className="bg-dark-subtle rounded-top">
             <tr>
-              <th>ID</th>
+              <th>Ref No</th>
               <th>Borrower</th>
               <th>Borrowing Date</th>
               <th>No of Books</th>
@@ -55,10 +68,10 @@ const BorrowingList = ( {borrowings} ) => {
                     <th>{b.borrowedBooks.length}</th>
                     <th>{b.cost}</th>
                     <th> {b.returnDate ? b.returnDate.slice(0,10) : ( 
-                        <Link href={"/TODO" + b.borrowingId} 
+                        <button onClick={() => handleReturnButton(b)} 
                             className="btn btn-outline-dark" 
                             role ="button"> Return 
-                            </Link>
+                        </button>
                         )}
                     </th>
                     <th>

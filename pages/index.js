@@ -1,12 +1,9 @@
-import Head from 'next/head'
-import Navbar from '../components/navbar'
-import Footer from '../components/footer'
 
 
 export default function Home() {
   return (
-    <div className=''>
-      <h1>HomePage</h1>
+    <div className='container p-3 justify-content-center'>
+      <h3>HomePage</h3>
     </div>
   )
 }
