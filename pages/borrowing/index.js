@@ -19,9 +19,6 @@ const Borrowings = () => {
 
     return ( 
         <div className="container mt-5" >
-            <div className="d-flex flex-row-reverse bd-highlight">
-                <Link href="/borrowing/create" type="button" className="btn btn-dark shadow">Create New Borrowing</Link>
-            </div>
             <div ref={borrowingBlock}>
                 <BorrowingList borrowings= {borrowings}/> 
             </div>

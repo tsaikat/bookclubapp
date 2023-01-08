@@ -1,6 +1,7 @@
 import Link from "next/link";
 import axios from 'axios';
 import  { useRef } from 'react';
+import SearchMember from "./search";
 
 const MemberList = ( {members} ) => {
 
@@ -30,9 +31,6 @@ const MemberList = ( {members} ) => {
     return ( 
         <>
         <div ref={actionMsg} className="" role="alart"></div>
-        <div className="d-flex justify-content-between align-items-center">
-          <h3 className="card-title mb-4 text-uppercase text-dark">List of Members</h3> 
-        </div>
         <table className="table table-hover tab container shadow-lg rounded-top p-lg-5">
           <thead className="bg-dark-subtle rounded-top">
             <tr>

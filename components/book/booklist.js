@@ -1,9 +1,12 @@
 import Link from "next/link";
 import axios from 'axios';
-import  { useRef } from 'react';
+import  { useContext, useRef } from 'react';
+import CartContext from "../cart/cartcontext";
 
 
 const BookList = ( {books} ) => {
+
+    const { addToCart } = useContext(CartContext);
 
     const actionMsg = useRef(null);
 
@@ -44,25 +47,35 @@ const BookList = ( {books} ) => {
               <th></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="">
             {books.map(b => (
                 <tr key ={b.bookId}>
-                    <th>{b.bookTitle}</th>
-                    <th>{b.author}</th>
-                    <th>{b.genre}</th>
-                    <th>
+                    <td>{b.bookTitle}</td>
+                    <td>{b.author}</td>
+                    <td>{b.genre}</td>
+                    <td>
+                        <div>
+                          <button
+                          className="btn btn-outline-secondary btn-light"  
+                          onClick={() => handleDeleteButton(b)}>
+                              Delete 
+                          </button>
+                          
+                          <span style={{padding: "10px"}}></span>
+                          
+                          <a href={"/book/edit/" + b.bookId} 
+                          className="btn btn-outline-secondary btn-light" 
+                          role ="button"> Edit 
+                          </a>
+                        </div>
+                    </td>
+                    <td>
                         <button
-                        className="btn btn-outline-dark"  
-                        onClick={() => handleDeleteButton(b)}>
-                             Delete 
+                        onClick={() => addToCart(b)}
+                        className="btn btn-outline-dark">
+                        Add to Cart 
                         </button>
-                    </th>
-                    <th>
-                        <Link href={"/book/edit/" + b.bookId} 
-                        className="btn btn-outline-dark" 
-                        role ="button"> Edit 
-                        </Link>
-                    </th>
+                    </td>
                 </tr>
             ))}
           </tbody>

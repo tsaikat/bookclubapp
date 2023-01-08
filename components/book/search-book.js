@@ -1,15 +1,15 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import BookList from "../../components/book/booklist";
+import BookList from "./booklist";
 
-const CreateBorrowing = () => {
+const SearchBook = () => {
     const [searchTxt, setSearchTxt] = useState(null);
     const [books, setBooks] = useState([]);
 
     async function getBooksbyAuthor () {
         const result = await axios.get(process.env.NEXT_PUBLIC_API_HOST + "/books/author?name=" + searchTxt)
                             .then(res => res.data)
-                            .catch(error => null);
+                            .catch(error => []);
         setBooks(result);
     }
 
@@ -28,7 +28,7 @@ const CreateBorrowing = () => {
             <input type="search" 
                 className="form-control shadow-lg" 
                 placeholder="Search by author" 
-                style={{"max-width": "300px"}}
+                style={{maxWidth: "300px"}}
                 onChange={handleSearch}/>
 
             <button type="button" 
@@ -36,10 +36,10 @@ const CreateBorrowing = () => {
                 onClick={handleSearch}> Search
             </button>
             </div>            
-            <div><BookList books={books}/></div>
+            <div className="container justify-content-center"><BookList books={books}/></div>
         </div>
 
      );
 }
  
-export default CreateBorrowing;
+export default SearchBook;
