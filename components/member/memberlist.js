@@ -3,7 +3,7 @@ import axios from 'axios';
 import  { useRef } from 'react';
 import { useSession } from "next-auth/react";
 
-const MemberList = ( {members} ) => {
+const MemberList = ( {members, toggle, setToggle} ) => {
 
     const actionMsg = useRef(null);
     const {data: session} = useSession();
@@ -15,6 +15,7 @@ const MemberList = ( {members} ) => {
               Authorization: 'Bearer ' + session.token
           }})
         .then(res => {
+            setToggle(!toggle);
             actionMsg.current.className = "alert alert-success";
             actionMsg.current.innerText = member.firstName + " " + member.lastName + " was removed successfully";
         })

@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 
 
 
-const AddMember = () => {
+const AddMember = ({ toggle, setToggle }) => {
 
     const actionMsg = useRef(null);
     const {data: session} = useSession();
@@ -33,6 +33,7 @@ const AddMember = () => {
                 Authorization: 'Bearer ' + session.token
             }})
             .then((response) => {
+              setToggle(!toggle);
                 actionMsg.current.className = "alert alert-success";
                 actionMsg.current.innerText = response.data.firstName + " " + response.data.lastName  + " was successfully added";
                 setFormData({ firstName: '', lastName: '', balance: '' });
@@ -44,8 +45,8 @@ const AddMember = () => {
 
             setTimeout(() => {
                 if (actionMsg.current) {
-                    actionMsg.current.className = '';
-                    actionMsg.current.innerText = '';
+                    actionMsg.current.className = "";
+                    actionMsg.current.innerText = "";
                 }
             }, 5000);
     };

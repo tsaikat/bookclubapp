@@ -11,6 +11,7 @@ const Members = () => {
     const {data: session} = useSession();
     
     const memberListBlock = useRef('');
+    const [toggle, setToggle] = useState(true)
 
     
     useEffect( () => {
@@ -25,16 +26,16 @@ const Members = () => {
                 memberListBlock.current.className = "alert alert-danger text-center";
                 memberListBlock.current.innerText = "Failed to render Members List: " + error.message;
             })
-    }, [<AddMember/>] );
+    }, [toggle] );
 
     return ( 
     <div className="container mt-5">
-        <AddMember/>
+        <AddMember toggle= {toggle} setToggle={setToggle}/>
         <div className="d-flex justify-content-between align-items-center">
           <h3 className="card-title mb-4 text-uppercase text-dark">List of Members</h3> 
         </div>
         <div ref={memberListBlock}>
-            <MemberList members ={members}/>
+            <MemberList members ={members} toggle= {toggle} setToggle={setToggle}/>
         </div>
     </div>
     );

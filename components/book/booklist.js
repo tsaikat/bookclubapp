@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 
 
 
-const BookList = ( {books} ) => {
+const BookList = ( {books, toggle, setToggle} ) => {
 
     const { addToCart } = useContext(CartContext);
 
@@ -21,6 +21,7 @@ const BookList = ( {books} ) => {
         .then(res => {
             actionMsg.current.className = "alert alert-success";
             actionMsg.current.innerText = book.bookTitle + " was deleted successfully";
+            setToggle(!toggle);
         })
         .catch(error => {
             actionMsg.current.className = "alert alert-danger";

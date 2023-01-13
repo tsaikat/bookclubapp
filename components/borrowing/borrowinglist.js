@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 
 
 
-const BorrowingList = ( {borrowings} ) => {
+const BorrowingList = ( {borrowings, toggle, setToggle} ) => {
 
     const actionMsg = useRef(null);
     const {data: session} = useSession();
@@ -16,6 +16,7 @@ const BorrowingList = ( {borrowings} ) => {
             Authorization: 'Bearer ' + session.token
         }})
         .then(res => {
+            setToggle(!toggle);
             actionMsg.current.className = "alert alert-success";
             actionMsg.current.innerText = "Borrowing ID: " + borrowing.borrowingId + " was deleted successfully";
         })
@@ -39,9 +40,9 @@ const BorrowingList = ( {borrowings} ) => {
             Authorization: 'Bearer ' + session.token
         }})
         .then(res => {
+          setToggle(!toggle);
           actionMsg.current.className = "alert alert-success";
           actionMsg.current.innerText = "Borrowing Ref no: " + borrowing.borrowingId + " returned";
-          // b.returnDate = res.data.returnDate;
         })
         .catch(error => {
           actionMsg.current.className = "alert alert-danger";

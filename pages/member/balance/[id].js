@@ -1,11 +1,17 @@
 import axios from 'axios';
 import React, { useRef, useState } from 'react';
+import { getSession, useSession } from "next-auth/react";
 
-export async function getServerSideProps( {query} ) {
+
+export async function getServerSideProps( {query, req, res} ) {
     const {id} = query;
+    const session = await getSession({req, res});
   
     const data = await axios
-        .get(process.env.NEXT_PUBLIC_API_HOST + '/members/' + id)
+        .get(process.env.NEXT_PUBLIC_API_HOST + '/members/' + id, {
+            headers: {
+                Authorization: 'Bearer ' + session.token
+            }})
         .then((res) => res.data)
         .catch((error) => null);
       
@@ -26,6 +32,8 @@ const AddBalance = ( {data, id} ) => {
     const [ balance, setBalance] = useState();
     const actionMsg = useRef(null);
     const renderBalance = useRef(data.balance);
+    const {data: session} = useSession();
+
 
     const handleChange = (event) => {
         setBalance(event.target.value);
@@ -35,7 +43,10 @@ const AddBalance = ( {data, id} ) => {
         event.preventDefault();
         data.balance = (parseInt(data.balance) +  parseInt(balance)).toString();
         
-        axios.put(process.env.NEXT_PUBLIC_API_HOST + "/members/" + id, data)
+        axios.put(process.env.NEXT_PUBLIC_API_HOST + "/members/" + id, data, {
+            headers: {
+                Authorization: 'Bearer ' + session.token
+            }})
             .then( (res) => {
                 actionMsg.current.className = "alert alert-success";
                 actionMsg.current.innerText = "Balance added successfully";

@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 const Books = ( ) => {
   const [books, setBooks] = useState([]);
   const {data: session} = useSession();
+  const [toggle, setToggle] = useState(true)
   
   const bookListBlock = useRef('');
 
@@ -25,14 +26,14 @@ const Books = ( ) => {
         bookListBlock.current.className = "alert alert-danger text-center";
         bookListBlock.current.innerText = "Failed to render booklist: " + error.message;
       });
-  }, [<AddBook/>]);
+  }, [toggle]);
 
 
   return (        
         <div className="container mt-5">
-          <AddBook/>
+          <AddBook toggle={toggle} setToggle={setToggle}/>
           <div ref={bookListBlock}> 
-          <BookList books={books}/>
+          <BookList books={books} toggle= {toggle} setToggle={setToggle}/>
           </div>
         </div>
      );

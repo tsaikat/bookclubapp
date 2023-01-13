@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 
 
 
-const AddBook = () => {
+const AddBook = ( {toggle, setToggle} ) => {
   const [formData, setFormData] = useState({
     bookTitle: "",
     author: "",
@@ -35,6 +35,7 @@ const AddBook = () => {
         actionMsg.current.className = "alert alert-success";
         actionMsg.current.innerText = response.data.bookTitle + " was successfully added";
         setFormData({ bookTitle: '', author: '', genre: '' });
+        setToggle(!toggle);
       }) 
       .catch((error) => {
         actionMsg.current.className = "alert alert-danger";

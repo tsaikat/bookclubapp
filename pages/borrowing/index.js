@@ -8,6 +8,8 @@ const Borrowings = () => {
     const [borrowings, setBorrowings] = useState([]);
     const borrowingBlock = useRef('');
     const {data: session} = useSession();
+    const [toggle, setToggle] = useState(true)
+
 
     useEffect( () => {
         axios.get(process.env.NEXT_PUBLIC_API_HOST + '/borrowings', {
@@ -22,12 +24,12 @@ const Borrowings = () => {
                 borrowingBlock.current.className = "alert alert-danger text-center";
                 borrowingBlock.current.innerText = "Failed to render borrowing list: " + error.message;
             })
-    }, [<BorrowingList/>]);
+    }, [toggle]);
 
     return ( 
         <div className="container mt-5" >
             <div ref={borrowingBlock}>
-                <BorrowingList borrowings= {borrowings}/> 
+                <BorrowingList borrowings= {borrowings} toggle= {toggle} setToggle={setToggle}/> 
             </div>
         </div>
      );
