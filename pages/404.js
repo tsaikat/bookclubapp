@@ -1,10 +1,11 @@
 import Link from "next/link";
 
 const Error404 = () => {
+    
     return ( 
-    <div className="text-center font-weight-bold text-dark pb-lg-5">
-    <h1>404 | Not Found</h1>
-    <h1>Return <Link href='/'>Home</Link></h1>
+    <div className=" container text-center font-weight-bold text-dark p-lg-5">
+    <h3>404 : Nothing to see here</h3>
+    <h3>Go <Link href='/'>Home</Link>!</h3>
     </div>
      );
 }

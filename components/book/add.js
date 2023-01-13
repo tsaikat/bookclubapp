@@ -1,5 +1,7 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
+import { useSession } from "next-auth/react";
+
 
 
 const AddBook = () => {
@@ -18,11 +20,17 @@ const AddBook = () => {
   };
 
   const actionMsg = useRef(null);
+  const {data: session} = useSession();
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    
 
-    axios.post(process.env.NEXT_PUBLIC_API_HOST + "/books", formData)
+    axios.post(process.env.NEXT_PUBLIC_API_HOST + "/books", formData, {
+      headers: {
+          Authorization: 'Bearer ' + session.token
+      }})
       .then((response) => {
         actionMsg.current.className = "alert alert-success";
         actionMsg.current.innerText = response.data.bookTitle + " was successfully added";

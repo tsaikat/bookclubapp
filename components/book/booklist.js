@@ -1,7 +1,8 @@
-import Link from "next/link";
 import axios from 'axios';
 import  { useContext, useRef } from 'react';
 import CartContext from "../cart/cartcontext";
+import { useSession } from "next-auth/react";
+
 
 
 const BookList = ( {books} ) => {
@@ -9,9 +10,14 @@ const BookList = ( {books} ) => {
     const { addToCart } = useContext(CartContext);
 
     const actionMsg = useRef(null);
+    const {data: session} = useSession();
+
 
     const handleDeleteButton = (book) => {
-        axios.delete(process.env.NEXT_PUBLIC_API_HOST + '/books/' + book.bookId )
+        axios.delete(process.env.NEXT_PUBLIC_API_HOST + '/books/' + book.bookId, {
+          headers: {
+              Authorization: 'Bearer ' + session.token
+          }})
         .then(res => {
             actionMsg.current.className = "alert alert-success";
             actionMsg.current.innerText = book.bookTitle + " was deleted successfully";

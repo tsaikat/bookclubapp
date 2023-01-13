@@ -2,12 +2,19 @@ import { useEffect, useRef, useState } from "react";
 import axios from 'axios';
 import BorrowingList from "../../components/borrowing/borrowinglist";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 const Borrowings = () => {
     const [borrowings, setBorrowings] = useState([]);
     const borrowingBlock = useRef('');
+    const {data: session} = useSession();
+
     useEffect( () => {
-        axios.get(process.env.NEXT_PUBLIC_API_HOST + '/borrowings')
+        axios.get(process.env.NEXT_PUBLIC_API_HOST + '/borrowings', {
+            headers: {
+                Authorization: 'Bearer ' + session.token
+            }
+        })
             .then ((res) => {
                 setBorrowings(res.data);
             })

@@ -3,10 +3,14 @@ import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import CartContext from "../../components/cart/cartcontext";
 import SearchMember from "../../components/member/search";
+import { useSession } from "next-auth/react";
+
 
 const Checkout = () => {
     const { items, removeFromCart, cleanCart } = useContext(CartContext);
     const [targetMember, setTargetMember] = useState({});
+    const {data: session} = useSession();
+
     
     const [disableButton, setDisableButton] = useState('true');
     const router= useRouter();
@@ -38,6 +42,7 @@ const Checkout = () => {
 
         const config = {
             headers: {
+            'Authorization': 'Bearer ' + session.token,
             'Content-Type': 'application/json'
             }
         };

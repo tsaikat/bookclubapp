@@ -1,13 +1,19 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useRef, useState } from 'react';
+import { useSession } from "next-auth/react";
 
 export async function getServerSideProps( {query} ) {
 
   const {id} = query;
+  const {data: session} = useSession();
+
 
   const data = await axios
-    .get(process.env.NEXT_PUBLIC_API_HOST + '/books/' + id)
+    .get(process.env.NEXT_PUBLIC_API_HOST + '/books/' + id, {
+      headers: {
+          Authorization: 'Bearer ' + session.token
+      }})
     .then((res) => res.data)
     .catch((error) => null);
     

@@ -1,14 +1,19 @@
 import Link from "next/link";
 import axios from 'axios';
 import  { useRef } from 'react';
-import SearchMember from "./search";
+import { useSession } from "next-auth/react";
 
 const MemberList = ( {members} ) => {
 
     const actionMsg = useRef(null);
+    const {data: session} = useSession();
+
 
     const handleDeleteButton = (member) => {
-        axios.delete(process.env.NEXT_PUBLIC_API_HOST + '/members/' + member.id )
+        axios.delete(process.env.NEXT_PUBLIC_API_HOST + '/members/' + member.id, {
+          headers: {
+              Authorization: 'Bearer ' + session.token
+          }})
         .then(res => {
             actionMsg.current.className = "alert alert-success";
             actionMsg.current.innerText = member.firstName + " " + member.lastName + " was removed successfully";
@@ -45,23 +50,23 @@ const MemberList = ( {members} ) => {
           <tbody>
             {members.map(m => (
                 <tr key ={m.id}>
-                    <th>{m.firstName + " " + m.lastName}</th>
-                    <th>{m.joinDate.slice(0, 10)}</th>
-                    <th>{m.balance}</th>
-                    <th>{m.borrowings.length}</th>
-                    <th>
+                    <td>{m.firstName + " " + m.lastName}</td>
+                    <td>{m.joinDate.slice(0, 10)}</td>
+                    <td>{m.balance}</td>
+                    <td>{m.borrowings.length}</td>
+                    <td>
                         <button
                         className="btn btn-outline-dark"  
                         onClick={() => handleDeleteButton(m)}>
                              Remove 
                         </button>
-                    </th>
-                    <th>
+                    </td>
+                    <td>
                         <Link href={"/member/balance/" + m.id } 
                         className="btn btn-outline-dark" 
                         role ="button"> Add balance 
                         </Link>
-                    </th>
+                    </td>
                 </tr>
             ))}
           </tbody>

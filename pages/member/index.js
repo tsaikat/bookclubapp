@@ -2,18 +2,22 @@ import { useEffect, useState, useRef } from "react";
 import MemberList from "../../components/member/memberlist";
 import axios from 'axios';
 import AddMember from "../../components/member/add";
-import SearchMember from "../../components/member/search";
+import { useSession } from "next-auth/react";
 
 
 const Members = () => {
     
     const [members, setMembers] = useState([]);
+    const {data: session} = useSession();
     
     const memberListBlock = useRef('');
 
     
     useEffect( () => {
-        axios.get(process.env.NEXT_PUBLIC_API_HOST + '/members')
+        axios.get(process.env.NEXT_PUBLIC_API_HOST + '/members', {
+            headers: {
+                Authorization: 'Bearer ' + session.token
+            }})
             .then(res => {
                 setMembers(res.data);
             })

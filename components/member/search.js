@@ -1,13 +1,22 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
+import { useSession } from "next-auth/react";
+
 
 const SearchMember = ( {updateTargetMember} ) => {
 
     const [members, setMembers] = useState([]);
     const [searchTxt, setSearchTxt] = useState(null);
+    const {data: session} = useSession();
+
+    
 
     async function fetchMembers() {
-        await axios.get(process.env.NEXT_PUBLIC_API_HOST + '/members')
+        await axios.get(process.env.NEXT_PUBLIC_API_HOST + '/members',{
+                headers: {
+                    Authorization: 'Bearer ' + session.token
+                }
+            })
             .then(res => {
                 setMembers(res.data);
             })
@@ -30,7 +39,7 @@ const SearchMember = ( {updateTargetMember} ) => {
     
     return (
         <div className="form-group p-3">
-        <input type="text" 
+        <input type="text"
             className="form-control rounded-5 shadow-lg" 
             placeholder="Select Member" 
             style={{maxWidth: '300px'}}

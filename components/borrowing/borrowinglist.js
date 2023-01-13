@@ -1,14 +1,20 @@
-import Link from "next/link";
 import axios from 'axios';
 import  { useRef } from 'react';
+import { useSession } from "next-auth/react";
+
 
 
 const BorrowingList = ( {borrowings} ) => {
 
     const actionMsg = useRef(null);
+    const {data: session} = useSession();
+
 
     const handleDeleteButton = (borrowing) => {
-        axios.delete(process.env.NEXT_PUBLIC_API_HOST + '/borrowings/' + borrowing.borrowingId )
+        axios.delete(process.env.NEXT_PUBLIC_API_HOST + '/borrowings/' + borrowing.borrowingId, {
+        headers: {
+            Authorization: 'Bearer ' + session.token
+        }})
         .then(res => {
             actionMsg.current.className = "alert alert-success";
             actionMsg.current.innerText = "Borrowing ID: " + borrowing.borrowingId + " was deleted successfully";
@@ -27,11 +33,14 @@ const BorrowingList = ( {borrowings} ) => {
         
     };
 
-    const handleReturnButton = (b) => {
-      axios.put(process.env.NEXT_PUBLIC_API_HOST + '/borrowings/' + b.borrowingId, b)
+    const handleReturnButton = (borrowing) => {
+      axios.put(process.env.NEXT_PUBLIC_API_HOST + '/borrowings/' + borrowing.borrowingId, borrowing, {
+        headers: {
+            Authorization: 'Bearer ' + session.token
+        }})
         .then(res => {
           actionMsg.current.className = "alert alert-success";
-          actionMsg.current.innerText = "Borrowing Ref no: " + b.borrowingId + " returned";
+          actionMsg.current.innerText = "Borrowing Ref no: " + borrowing.borrowingId + " returned";
           // b.returnDate = res.data.returnDate;
         })
         .catch(error => {
@@ -62,25 +71,25 @@ const BorrowingList = ( {borrowings} ) => {
           <tbody>
             {borrowings.map(b => (
                 <tr key ={b.borrowingId}>
-                    <th>{b.borrowingId}</th>
-                    <th>{b.borrower}</th>
-                    <th>{b.borrowDate.slice(0,10)}</th>
-                    <th>{b.borrowedBooks.length}</th>
-                    <th>{b.cost}</th>
-                    <th> {b.returnDate ? b.returnDate.slice(0,10) : ( 
+                    <td>{b.borrowingId}</td>
+                    <td>{b.borrower}</td>
+                    <td>{b.borrowDate.slice(0,10)}</td>
+                    <td>{b.borrowedBooks.length}</td>
+                    <td>{b.cost}</td>
+                    <td> {b.returnDate ? b.returnDate.slice(0,10) : ( 
                         <button onClick={() => handleReturnButton(b)} 
                             className="btn btn-outline-dark" 
                             role ="button"> Return 
                         </button>
                         )}
-                    </th>
-                    <th>
+                    </td>
+                    <td>
                         <button
                         className="btn btn-outline-dark"  
                         onClick={() => handleDeleteButton(b)}>
                              Delete 
                         </button>
-                    </th>
+                    </td>
                 </tr>
             ))}
           </tbody>

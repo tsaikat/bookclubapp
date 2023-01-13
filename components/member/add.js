@@ -1,10 +1,14 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
+import { useSession } from "next-auth/react";
+
 
 
 const AddMember = () => {
 
     const actionMsg = useRef(null);
+    const {data: session} = useSession();
+
 
     const [formData, setFormData] = useState({
         firstName: "",
@@ -24,7 +28,10 @@ const AddMember = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        axios.post(process.env.NEXT_PUBLIC_API_HOST + "/members", formData)
+        axios.post(process.env.NEXT_PUBLIC_API_HOST + "/members", formData, {
+            headers: {
+                Authorization: 'Bearer ' + session.token
+            }})
             .then((response) => {
                 actionMsg.current.className = "alert alert-success";
                 actionMsg.current.innerText = response.data.firstName + " " + response.data.lastName  + " was successfully added";

@@ -1,15 +1,23 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import BookList from "./booklist";
+import { useSession } from "next-auth/react";
+
 
 const SearchBook = () => {
     const [searchTxt, setSearchTxt] = useState(null);
     const [books, setBooks] = useState([]);
+    const {data: session} = useSession();
+
 
     async function getBooksbyAuthor () {
-        const result = await axios.get(process.env.NEXT_PUBLIC_API_HOST + "/books/author?name=" + searchTxt)
-                            .then(res => res.data)
-                            .catch(error => []);
+        const result = await axios
+                .get(process.env.NEXT_PUBLIC_API_HOST + "/books/author?name=" + searchTxt,{
+                headers: {
+                    Authorization: 'Bearer ' + session.token
+                }})
+                .then(res => res.data)
+                .catch(error => []);
         setBooks(result);
     }
 
