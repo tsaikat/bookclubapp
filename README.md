@@ -5,6 +5,12 @@ Please follow the steps below to get started.
 
 1. Clone/copy the project on your local drive
 2. Edit .env.local file to set the API URL, currently it's `http://localhost:8000`
+
+3. To run on a docker container:
+
+```bash
+docker-compose up
+```
 3. Build/compile the project:
 
 ```bash
