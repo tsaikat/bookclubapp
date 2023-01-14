@@ -1,5 +1,5 @@
 import axios from 'axios';
-import  { useRef } from 'react';
+import  { useEffect, useRef } from 'react';
 import { useSession } from "next-auth/react";
 
 
@@ -50,7 +50,6 @@ const BorrowingList = ( {borrowings, toggle, setToggle} ) => {
         });
     }
 
-
     return ( 
         <>
         <div ref={actionMsg} className="" role="alart"></div>
@@ -73,7 +72,7 @@ const BorrowingList = ( {borrowings, toggle, setToggle} ) => {
             {borrowings.map(b => (
                 <tr key ={b.borrowingId}>
                     <td>{b.borrowingId}</td>
-                    <td>{b.borrower}</td>
+                    <td>{b.borrowerName}</td>
                     <td>{b.borrowDate.slice(0,10)}</td>
                     <td>{b.borrowedBooks.length}</td>
                     <td>{b.cost}</td>

@@ -12,13 +12,18 @@ export const authOptions = {
     callbacks: {    
     async jwt({ token, account, profile }) {
         if (account) {
-            token.accessToken = account.id_token
+            token.tokenExpire = account.expires_at; 
+            token.accessToken = account.id_token;
         }
         return token
     },
     
     async session({ session, data, token }) {
+        const currentDate = new Date();
+        currentDate.setMinutes(25); // set to expire every 25 min
+
         session.token = token.accessToken;
+        session.expires = currentDate.toISOString();
         return session
     }
 }

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import CartContext from "../../components/cart/cartcontext";
 import SearchMember from "../../components/member/search";
 import { useSession } from "next-auth/react";
@@ -10,8 +10,10 @@ const Checkout = () => {
     const { items, removeFromCart, cleanCart } = useContext(CartContext);
     const [targetMember, setTargetMember] = useState({});
     const {data: session} = useSession();
-
+    const actionMsg = useRef(null);
     
+    let itemCount = 0;
+
     const [disableButton, setDisableButton] = useState('true');
     const router= useRouter();
 
@@ -30,7 +32,12 @@ const Checkout = () => {
 
 
     const handleCheckout = async () => {
-        const borrowedBooks = items.map(item => item.bookId)
+        if (targetMember.balance < (items.length*10) ) {
+            actionMsg.current.className = "alert alert-danger";
+            actionMsg.current.innerText = "Failed! " + targetMember.firstName + " doesn't have enough credit";
+            return;
+        }
+        const borrowedBooks = items.map(item => item.bookId);
         
         const data = {
             borrowedBooks: [...borrowedBooks],
@@ -53,14 +60,11 @@ const Checkout = () => {
                     cleanCart();
                     router.push('/borrowing');
                 });
-        
-        
-
     }
 
     return ( 
         <div className="container container-fluid shadow-sm p-4" style={{maxWidth: "800px"}}>
-            
+            <div ref={actionMsg} className="" role="alart"></div>
             <div className="d-flex justify-content-between align-items-center">
              <h4 className="card-title mb-4 text-dark">
                 {(!targetMember.hasOwnProperty('firstName')) ?
@@ -79,8 +83,8 @@ const Checkout = () => {
                         </tr>
                         </thead>
                     {items.map(item => (
-                        <tbody className="table-group-divider" key={Math.random()}>
-                            <tr>
+                        <tbody className="table-group-divider">
+                            <tr key={itemCount++}>
                                 <td>{item.bookTitle} ({item.author})</td>
                                 <td>
                                     <span className="p-3">$10</span>

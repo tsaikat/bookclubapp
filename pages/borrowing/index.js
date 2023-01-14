@@ -10,13 +10,11 @@ const Borrowings = () => {
     const {data: session} = useSession();
     const [toggle, setToggle] = useState(true)
 
-
     useEffect( () => {
         axios.get(process.env.NEXT_PUBLIC_API_HOST + '/borrowings', {
             headers: {
                 Authorization: 'Bearer ' + session.token
-            }
-        })
+            }})
             .then ((res) => {
                 setBorrowings(res.data);
             })
