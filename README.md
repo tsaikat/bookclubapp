@@ -1,15 +1,23 @@
-#BookclubApp
-This is a Next.js project written in JavaScript(React). A web client application for [Bookclub](https://github.com/tsaikat/bookclub) REST API
+# BookclubApp
+This is a Next.js project written in JavaScript(React). A web client application for [Bookclub](https://github.com/tsaikat/bookclub) REST API.
+
+## Features
+- User login using Google
+- All CRUD operation interatively
+- Adding Books to the Cart
+- Checking out cart
+- Signing out when the session expires
+
 
 ## Getting Started
 Please follow the steps below to get started.
 
 1. Clone the project on your local drive
-2. Edit .env.local file to set up the following veriables 
-- `NEXT_PUBLIC_API_HOST`, currently it's `http://localhost:8000` (run the backend first -> [Bookclub](https://github.com/tsaikat/bookclub))
+2. Create a .env.local file and add the following veriables required to run the applicaiton 
+- `NEXT_PUBLIC_API_HOST`: Set it to `http://localhost:8000` (run the backend first -> [Bookclub](https://github.com/tsaikat/bookclub)). Or the location of API if it's different.
 - `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`
-- `JWT_SCRET` for encryption. This can be generated using command `openssl rand -base64 32` on your terminal. 
-- `NEXTAUTH_URL` (optional) can be alterered to start the web server in a different port.
+- `JWT_SCRET` : For encryption. This can be generated using command `openssl rand -base64 32` on your terminal. 
+- `NEXTAUTH_URL`: What port the web server should start. For example: `http://localhost:3000`
 
 ## How to run?
 Build/compile the project without docker:
