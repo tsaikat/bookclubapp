@@ -29,4 +29,4 @@ yarn start
 ### Run on Docker Container
 Run the command on the terminal: `docker-compose up`
 
-5. [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. visit [http://localhost:3000](http://localhost:3000) with your browser to see the result.
