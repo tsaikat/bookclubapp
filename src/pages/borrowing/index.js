@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import axios from 'axios';
 import BorrowingList from "../../components/borrowing/borrowinglist";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
 
 const Borrowings = () => {

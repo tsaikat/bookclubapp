@@ -1,7 +1,7 @@
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Link from 'next/link';
-import CartIcon from './cart/carticon';
+import CartIcon from '../cart/carticon';
 import { NavDropdown } from 'react-bootstrap';
 import { useSession, signIn, signOut, getProviders } from 'next-auth/react';
 
