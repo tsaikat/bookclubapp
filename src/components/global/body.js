@@ -1,9 +1,13 @@
+import api from "@/classes/api";
 import { useSession } from "next-auth/react";
 
 const Body = ({ Component, pageProps }) => {
     const {data: session, status} = useSession();
 
     if (status === "authenticated") {
+        api.setToken(session.token);
+        // const date = new Date(session.expires);
+        // console.log(date);
         return <Component {...pageProps} />;
     }
 

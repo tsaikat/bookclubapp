@@ -10,34 +10,64 @@ class ApiManager {
     return instance;
   }
 
+  setToken(token) {
+    this.headers["Authorization"] = 'Bearer ' + token;
+  }
+
   async get(endpoint) {
-    return fetch(this.baseURL + endpoint, {
+    const res = await fetch(this.baseURL + endpoint, {
       method: "GET",
       headers: this.headers,
     });
+    
+    const data = await res.json();
+    return {
+      data: data,
+      ok: res.ok,
+      status: res.status
+    }
   }
 
   async post(endpoint, body) {
-    return fetch(this.baseURL + endpoint, {
+    const res = await fetch(this.baseURL + endpoint, {
       method: "POST",
       headers: this.headers,
       body: JSON.stringify(body),
     });
+    
+    const data = await res.json();
+    return {
+      data: data,
+      ok: res.ok,
+      status: res.status
+    }
   }
 
   async put(endpoint, body) {
-    return fetch(this.baseURL + endpoint, {
+    const res = await fetch(this.baseURL + endpoint, {
       method: "PUT",
       headers: this.headers,
       body: JSON.stringify(body),
     });
+
+    const data = await res.json();
+    return {
+      data: data,
+      ok: res.ok,
+      status: res.status
+    }
   }
 
   async delete(endpoint) {
-    return fetch(this.baseURL + endpoint, {
+    const res = await fetch(this.baseURL + endpoint, {
       method: "DELETE",
       headers: this.headers,
     });
+
+    return {
+      ok: res.ok,
+      status: res.status
+    }
   }
 }
 
