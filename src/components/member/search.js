@@ -1,64 +1,64 @@
-import axios from "axios";
-import { useEffect, useRef, useState } from "react";
-import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import api from "@/classes/api";
 
+const SearchMember = ({ updateTargetMember }) => {
+  const [members, setMembers] = useState([]);
+  const [searchTxt, setSearchTxt] = useState(null);
 
-const SearchMember = ( {updateTargetMember} ) => {
+  async function fetchMembers() {
+    api
+      .get("/members")
+      .then((res) => {
+        if (!res.ok) throw Error(res.status);
+        setMembers(res.data);
+      })
+      .catch((error) => []);
+  }
 
-    const [members, setMembers] = useState([]);
-    const [searchTxt, setSearchTxt] = useState(null);
-    const {data: session} = useSession();
+  useEffect(() => {
+    fetchMembers();
+  }, []);
 
-    
+  const handleClick = (member) => {
+    updateTargetMember(member);
+    setSearchTxt("");
+  };
 
-    async function fetchMembers() {
-        await axios.get(process.env.NEXT_PUBLIC_API_HOST + '/members',{
-                headers: {
-                    Authorization: 'Bearer ' + session.token
-                }
-            })
-            .then(res => {
-                setMembers(res.data);
-            })
-            .catch(error => [])
-    }
+  const handleChange = (event) => {
+    event.preventDefault();
+    setSearchTxt(event.target.value.toLowerCase());
+  };
 
-    useEffect( () => {
-        fetchMembers();
-    }, [] );
+  return (
+    <div className="form-group p-3">
+      <input
+        type="text"
+        className="form-control rounded-5 shadow-lg"
+        placeholder="Select Member"
+        style={{ maxWidth: "300px" }}
+        onChange={handleChange}
+      />
 
-    const handleClick = (member) => {
-        updateTargetMember(member);
-        setSearchTxt('');
-    }
+      <div className="dropdown overflow-auto small p-2">
+        {members
+          .filter(
+            (m) =>
+              searchTxt &&
+              (m.firstName + m.lastName).toLowerCase().includes(searchTxt)
+          )
+          .map((member) => (
+            <button
+              className="dropdown-item"
+              key={member.id}
+              onClick={() => handleClick(member)}
+            >
+              {member.firstName + " " + member.lastName}
+              <span style={{ color: "grey" }}> ({member.id}) </span>
+            </button>
+          ))}
+      </div>
+    </div>
+  );
+};
 
-    const handleChange = (event) => {
-        event.preventDefault();
-        setSearchTxt(event.target.value.toLowerCase());
-    }
-    
-    return (
-        <div className="form-group p-3">
-        <input type="text"
-            className="form-control rounded-5 shadow-lg" 
-            placeholder="Select Member" 
-            style={{maxWidth: '300px'}}
-            onChange={handleChange}/>
-
-        <div className="dropdown overflow-auto small p-2">
-            {members
-                .filter((m) => (searchTxt && (m.firstName + m.lastName).toLowerCase().includes(searchTxt)))
-                .map( (member) => (
-                <button className="dropdown-item"
-                key={member.id}
-                onClick={() => handleClick(member)}> 
-                    {member.firstName + ' ' + member.lastName}  
-                    <span style={{color:'grey'}}> ({member.id}) </span>
-                </button>
-            ))}
-        </div>
-        </div>
-     );
-}
- 
 export default SearchMember;

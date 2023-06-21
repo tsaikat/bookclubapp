@@ -1,44 +1,39 @@
 import { useEffect, useState, useRef } from "react";
 import MemberList from "../../components/member/memberlist";
-import axios from 'axios';
 import AddMember from "../../components/member/add";
-import { useSession } from "next-auth/react";
-
+import api from "@/classes/api";
 
 const Members = () => {
-    
-    const [members, setMembers] = useState([]);
-    const {data: session} = useSession();
-    
-    const memberListBlock = useRef('');
-    const [toggle, setToggle] = useState(true)
+  const [members, setMembers] = useState([]);
 
-    
-    useEffect( () => {
-        axios.get(process.env.NEXT_PUBLIC_API_HOST + '/members', {
-            headers: {
-                Authorization: 'Bearer ' + session.token
-            }})
-            .then(res => {
-                setMembers(res.data);
-            })
-            .catch( (error) => {
-                memberListBlock.current.className = "alert alert-danger text-center";
-                memberListBlock.current.innerText = "Failed to render Members List: " + error.message;
-            })
-    }, [toggle] );
+  const memberListBlock = useRef("");
+  const [toggle, setToggle] = useState(true);
 
-    return ( 
+  useEffect(() => {
+    api.get("/members")
+      .then((res) => {
+        if (!res.ok) throw Error(res.status);
+        setMembers(res.data);
+      })
+      .catch((error) => {
+        memberListBlock.current.className = "alert alert-danger text-center";
+        memberListBlock.current.innerText = "Server error: " + error.message;
+      });
+  }, [toggle]);
+
+  return (
     <div className="container mt-5">
-        <AddMember toggle= {toggle} setToggle={setToggle}/>
-        <div className="d-flex justify-content-between align-items-center">
-          <h3 className="card-title mb-4 text-uppercase text-dark">List of Members</h3> 
-        </div>
-        <div ref={memberListBlock}>
-            <MemberList members ={members} toggle= {toggle} setToggle={setToggle}/>
-        </div>
+      <AddMember toggle={toggle} setToggle={setToggle} />
+      <div className="d-flex justify-content-between align-items-center">
+        <h3 className="card-title mb-4 text-uppercase text-dark">
+          List of Members
+        </h3>
+      </div>
+      <div ref={memberListBlock}>
+        <MemberList members={members} toggle={toggle} setToggle={setToggle} />
+      </div>
     </div>
-    );
-}
- 
+  );
+};
+
 export default Members;
